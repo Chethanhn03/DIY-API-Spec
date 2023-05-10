@@ -1,0 +1,68 @@
+#%RAML 1.0
+title: Customer Accounts API
+description: creating customers account data for accessing through API for rest of the IT department
+protocols: [HTTP,HTTPS]
+mediaType: [application/json]
+version: v1
+baseUri: http:customeraccounts.com/api/{version}
+
+
+types:
+  Account: !include dataTypes/account.raml
+  
+traits:
+  ErrorResponses: !include traits/errorResponse.raml
+
+resourceTypes:
+  Accounts: !include resourceTypes/accountsExample.raml
+  NewAccounts: !include resourceTypes/accountsExampleNew.raml 
+
+
+/accounts:
+  get:
+    displayName: Get all accounts
+    description: Retrives a list of all accounts basedon the given query parameters
+    headers:
+      Requester-ID:
+        displayName: Requester ID
+        description: id details of the person requesting account info
+        type: string
+        required: true
+        
+    queryParameters:
+      type: 
+        displayName: Account Type
+        description: Type of account checking or saving
+        required: true
+        type: string
+        enum:
+          - checking
+          - saving
+      name: 
+        displayName: Owner name
+        description: Account holders name
+        required: false
+        type: string
+      country:
+        displayName: Owner country
+        description: country of account holder
+        required: false 
+        type: string
+
+  post:
+    displayName: Add new account
+    description: Creating new accounts
+    headers:
+      Requester-ID:
+        displayName: Requester ID
+        description: id details of the person requesting account info
+        type: string
+        required: true
+    body:
+      application/json:
+        type: Account[]
+        
+          
+      
+
+    
